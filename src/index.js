@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const textSubmission = $('.text-submission textarea')
     const textSubButton = $('.text-submission button')
+    const wordCount = $('.word-count')
 
     $.getJSON('https://wordwatch-api.herokuapp.com/api/v1/top_word')
         .then((data) => {
@@ -24,7 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 grouped[lowerWord] = 1
             }
         })
-        debugger
+        Object.keys(grouped).forEach(function(key) {
+            let count = grouped[key]
+            let word = document.createElement('p')
+            $(word).text(`${key} `)
+            $(word).css('font-size', `${count}em`)
+            wordCount.append(word)
+        })
 
     })
 
