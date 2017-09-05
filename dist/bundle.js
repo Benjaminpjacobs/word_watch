@@ -60,39 +60,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(1);
-module.exports = __webpack_require__(3);
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-const $ = __webpack_require__(2);
-
-const textArea = $('.text-submission textarea')
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    $.getJSON('https://wordwatch-api.herokuapp.com/api/v1/top_word')
-        .then((data) => {
-            const topWord = Object.keys(data.word)[0]
-            const topWordCount = data.word[topWord]
-            $('.top-word h3').append(`${topWord}: (${topWordCount})`)
-        })
-
-
-})
-
-/***/ }),
-/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10352,13 +10324,148 @@ return jQuery;
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const $ = __webpack_require__(0)
+const utility = __webpack_require__(2)
+
+const postWord = (word) => {
+    word !== '' ?
+        $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`) :
+        null
+}
+
+const getTopWord = (topWordHeader) => {
+    $.getJSON('https://wordwatch-api.herokuapp.com/api/v1/top_word')
+        .then(function(data) {
+            utility.appendTopWord(data, topWordHeader)
+        })
+}
+
+
+module.exports = {
+    getTopWord,
+    postWord,
+}
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const $ = __webpack_require__(0)
+const service = __webpack_require__(1)
+
+const postWord = (word) => {
+    word !== '' ?
+        $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`) :
+        null
+}
+
+const appendWords = (grouped, wordCount) =>
+    Object.keys(grouped).forEach(function(key) {
+        let count = grouped[key]
+        let word = document.createElement('p')
+        $(word).text(`${key} `)
+        $(word).css('font-size', `${count}em`)
+        wordCount.append(word)
+    })
+
+const countWords = words => {
+    const grouped = {}
+    words.forEach(function(word) {
+        let lowerWord = word.toLowerCase()
+        service.postWord(lowerWord)
+        grouped[lowerWord] ?
+            grouped[lowerWord] += 1 :
+            grouped[lowerWord] = 1
+    })
+    return grouped
+}
+
+const appendTopWord = (data, topWordHeader) => {
+    const topWord = Object.keys(data.word)[0]
+    const topWordCount = data.word[topWord]
+    topWordHeader.append(`${topWord}: (${topWordCount})`)
+}
+
+module.exports = {
+    appendWords,
+    appendTopWord,
+    countWords,
+}
+
+/***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(4);
+module.exports = __webpack_require__(7);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const events = __webpack_require__(5)
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const $ = __webpack_require__(0);
+const service = __webpack_require__(1)
+const handle = __webpack_require__(6)
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const textSubmission = $('.text-submission textarea')
+    const textSubmitButton = $('.text-submission button')
+    const wordCount = $('.word-count')
+    const topWordHeader = $('.top-word h3')
+
+    service.getTopWord(topWordHeader);
+
+    textSubmitButton.on('click', () => handle.wordAppend(textSubmission, wordCount))
+
+    textSubmission.on('keyup', (e) => handle.pressEnter(e, textSubmission, wordCount))
+
+})
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+const $ = __webpack_require__(0);
+const utility = __webpack_require__(2);
+
+const pressEnter = (event, textSubmission, wordCount) => {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        wordAppend(textSubmission, wordCount)
+    }
+}
+
+const wordAppend = (textSubmission, wordCount) => {
+    const words = textSubmission.val().split(/[ :;!?,-.\]\[\n)(]+/)
+    const grouped = utility.countWords(words)
+    wordCount.html('')
+    utility.appendWords(grouped, wordCount)
+}
+
+module.exports = {
+    pressEnter,
+    wordAppend,
+}
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(4);
+var content = __webpack_require__(8);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -10366,7 +10473,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(6)(content, options);
+var update = __webpack_require__(10)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -10383,10 +10490,10 @@ if(false) {
 }
 
 /***/ }),
-/* 4 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(5)(undefined);
+exports = module.exports = __webpack_require__(9)(undefined);
 // imports
 exports.push([module.i, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,700);", ""]);
 
@@ -10397,7 +10504,7 @@ exports.push([module.i, "/* http://meyerweb.com/eric/tools/css/reset/ \n   v2.0 
 
 
 /***/ }),
-/* 5 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -10479,7 +10586,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 6 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10525,7 +10632,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(7);
+var	fixUrls = __webpack_require__(11);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -10838,7 +10945,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 7 */
+/* 11 */
 /***/ (function(module, exports) {
 
 

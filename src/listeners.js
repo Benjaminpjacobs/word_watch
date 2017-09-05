@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const wordCount = $('.word-count')
     const topWordHeader = $('.top-word h3')
 
-    service.getTopWord(wordCount, topWordHeader);
+    service.getTopWord(topWordHeader);
 
     textSubmitButton.on('click', () => handle.wordAppend(textSubmission, wordCount))
 
