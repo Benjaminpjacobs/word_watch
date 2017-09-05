@@ -1,5 +1,4 @@
 const $ = require('jquery');
-const service = require('./service')
 const handle = require('./handlers')
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -9,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const wordCount = $('.word-count')
     const topWordHeader = $('.top-word h3')
 
-    service.getTopWord(topWordHeader);
+    handle.topWord(topWordHeader)
 
     textSubmitButton.on('click', () => handle.wordAppend(textSubmission, wordCount))
 

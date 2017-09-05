@@ -1,6 +1,8 @@
-const apiService = require('./service')
-debugger
-const appendWords = (grouped, wordCount) =>
+const $ = require('jquery')
+const service = require('./services')
+
+const appendWords = (grouped, wordCount) => {
+
     Object.keys(grouped).forEach(function(key) {
         let count = grouped[key]
         let word = document.createElement('p')
@@ -8,6 +10,7 @@ const appendWords = (grouped, wordCount) =>
         $(word).css('font-size', `${count}em`)
         wordCount.append(word)
     })
+}
 
 const countWords = words => {
     const grouped = {}
@@ -21,10 +24,13 @@ const countWords = words => {
     return grouped
 }
 
-const appendTopWord = (data, topWordHeader) => {
-    const topWord = Object.keys(data.word)[0]
-    const topWordCount = data.word[topWord]
-    topWordHeader.append(`${topWord}: (${topWordCount})`)
+const appendTopWord = (topWordHeader) => {
+    service.getTopWord()
+        .then((data) => {
+            const topWord = Object.keys(data.word)[0]
+            const topWordCount = data.word[topWord]
+            topWordHeader.append(`${topWord}: (${topWordCount})`)
+        })
 }
 
 module.exports = {

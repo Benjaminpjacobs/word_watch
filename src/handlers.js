@@ -1,5 +1,5 @@
 const $ = require('jquery');
-const utility = require('./utility');
+const dataUtility = require('./data_utility');
 
 const pressEnter = (event, textSubmission, wordCount) => {
     if (event.keyCode === 13) {
@@ -10,12 +10,17 @@ const pressEnter = (event, textSubmission, wordCount) => {
 
 const wordAppend = (textSubmission, wordCount) => {
     const words = textSubmission.val().split(/[ :;!?,-.\]\[\n)(]+/)
-    const grouped = utility.countWords(words)
+    const grouped = dataUtility.countWords(words)
     wordCount.html('')
-    utility.appendWords(grouped, wordCount)
+    dataUtility.appendWords(grouped, wordCount)
+}
+
+const topWord = (topWordHeader) => {
+    dataUtility.appendTopWord(topWordHeader)
 }
 
 module.exports = {
     pressEnter,
     wordAppend,
+    topWord,
 }

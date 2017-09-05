@@ -10328,41 +10328,33 @@ return jQuery;
 /***/ (function(module, exports, __webpack_require__) {
 
 const $ = __webpack_require__(0)
-const utility = __webpack_require__(2)
+const dataUtility = __webpack_require__(2)
 
 const postWord = (word) => {
-    word !== '' ?
-        $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`) :
-        null
+    $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`)
 }
 
 const getTopWord = (topWordHeader) => {
     $.getJSON('https://wordwatch-api.herokuapp.com/api/v1/top_word')
         .then(function(data) {
-            utility.appendTopWord(data, topWordHeader)
+            dataUtility.appendTopWord(data, topWordHeader)
         })
 }
 
 
 module.exports = {
-    getTopWord,
     postWord,
+    getTopWord,
 }
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-const $ = __webpack_require__(0)
 const service = __webpack_require__(1)
 
-const postWord = (word) => {
-    word !== '' ?
-        $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`) :
-        null
-}
+const appendWords = (grouped, wordCount) => {
 
-const appendWords = (grouped, wordCount) =>
     Object.keys(grouped).forEach(function(key) {
         let count = grouped[key]
         let word = document.createElement('p')
@@ -10370,12 +10362,14 @@ const appendWords = (grouped, wordCount) =>
         $(word).css('font-size', `${count}em`)
         wordCount.append(word)
     })
+}
 
 const countWords = words => {
+    debugger
+    service.postWord(lowerWord)
     const grouped = {}
     words.forEach(function(word) {
         let lowerWord = word.toLowerCase()
-        service.postWord(lowerWord)
         grouped[lowerWord] ?
             grouped[lowerWord] += 1 :
             grouped[lowerWord] = 1
@@ -10437,7 +10431,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /***/ (function(module, exports, __webpack_require__) {
 
 const $ = __webpack_require__(0);
-const utility = __webpack_require__(2);
+const dataUtility = __webpack_require__(2);
 
 const pressEnter = (event, textSubmission, wordCount) => {
     if (event.keyCode === 13) {
@@ -10448,9 +10442,9 @@ const pressEnter = (event, textSubmission, wordCount) => {
 
 const wordAppend = (textSubmission, wordCount) => {
     const words = textSubmission.val().split(/[ :;!?,-.\]\[\n)(]+/)
-    const grouped = utility.countWords(words)
+    const grouped = dataUtility.countWords(words)
     wordCount.html('')
-    utility.appendWords(grouped, wordCount)
+    dataUtility.appendWords(grouped, wordCount)
 }
 
 module.exports = {
