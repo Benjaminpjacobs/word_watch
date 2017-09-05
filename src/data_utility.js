@@ -30,7 +30,7 @@ const appendTopWord = (topWordHeader) => {
         .then((data) => {
             const topWord = Object.keys(data.word)[0]
             const topWordCount = data.word[topWord]
-            topWordHeader.append(`${topWord}: (${topWordCount})`)
+            topWordHeader.append(`${topWord} (${topWordCount})`)
         })
 }
 
