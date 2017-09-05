@@ -1,5 +1,9 @@
 const $ = require('jquery');
 
+const postToWordWatch = word => {
+    $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`)
+        .then(data => console.log(data))
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -19,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const grouped = {}
         words.forEach(function(word) {
             let lowerWord = word.toLowerCase()
+            postToWordWatch(lowerWord)
             if (grouped[lowerWord]) {
                 grouped[lowerWord] += 1
             } else {
