@@ -1,21 +1,21 @@
 const $ = require('jquery');
-const utility = require('./words');
+const utility = require('./utility');
 
-const handleEnter = (event, textSubmission, wordCount) => {
+const pressEnter = (event, textSubmission, wordCount) => {
     if (event.keyCode === 13) {
         event.preventDefault();
-        handleAppend(textSubmission, wordCount)
+        wordAppend(textSubmission, wordCount)
     }
 }
 
-const handleAppend = (textSubmission, wordCount) => {
-    const words = textSubmission.val().split(/[ :;,-.\]\[\n)(]+/)
+const wordAppend = (textSubmission, wordCount) => {
+    const words = textSubmission.val().split(/[ :;!?,-.\]\[\n)(]+/)
     const grouped = utility.countWords(words)
     wordCount.html('')
     utility.appendWords(grouped, wordCount)
 }
 
 module.exports = {
-    handleEnter,
-    handleAppend,
+    pressEnter,
+    wordAppend,
 }

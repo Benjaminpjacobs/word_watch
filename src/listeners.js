@@ -1,18 +1,18 @@
 const $ = require('jquery');
 const service = require('./service')
-const handlers = require('./handlers')
+const handle = require('./handlers')
 
 document.addEventListener("DOMContentLoaded", () => {
 
     const textSubmission = $('.text-submission textarea')
-    const textSubButton = $('.text-submission button')
+    const textSubmitButton = $('.text-submission button')
     const wordCount = $('.word-count')
     const topWordHeader = $('.top-word h3')
 
     service.getTopWord(wordCount, topWordHeader);
 
-    textSubButton.on('click', () => handlers.handleAppend(textSubmission, wordCount))
+    textSubmitButton.on('click', () => handle.wordAppend(textSubmission, wordCount))
 
-    textSubmission.on('keyup', (e) => handlers.handleEnter(e, textSubmission, wordCount))
+    textSubmission.on('keyup', (e) => handle.pressEnter(e, textSubmission, wordCount))
 
 })

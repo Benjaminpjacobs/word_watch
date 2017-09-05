@@ -1,6 +1,5 @@
 const $ = require('jquery')
 
-
 const getTopWord = (wordCount, topWordHeader) => {
     $.getJSON('https://wordwatch-api.herokuapp.com/api/v1/top_word')
         .then((data) => {
@@ -15,8 +14,6 @@ const postToWordWatch = word => {
         $.post(`https://wordwatch-api.herokuapp.com/api/v1/words?word[value]=${word}`) :
         null
 }
-
-
 
 module.exports = {
     getTopWord,
