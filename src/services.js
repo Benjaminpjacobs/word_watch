@@ -10,8 +10,6 @@ const postWord = (word) => {
 const getTopWord = () =>
     $.getJSON('https://wordwatch-api.herokuapp.com/api/v1/top_word')
 
-
-
 module.exports = {
     postWord,
     getTopWord,

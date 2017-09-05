@@ -9,9 +9,10 @@ const pressEnter = (event, textSubmission, wordCount) => {
 }
 
 const wordAppend = (textSubmission, wordCount) => {
+    wordCount.html('')
     const words = textSubmission.val().split(/[ :;!?,-.\]\[\n)(]+/)
     const grouped = dataUtility.countWords(words)
-    wordCount.html('')
+    dataUtility.postWords(words)
     dataUtility.appendWords(grouped, wordCount)
 }
 

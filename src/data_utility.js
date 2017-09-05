@@ -2,26 +2,27 @@ const $ = require('jquery')
 const service = require('./services')
 
 const appendWords = (grouped, wordCount) => {
-
-    Object.keys(grouped).forEach(function(key) {
-        let count = grouped[key]
-        let word = document.createElement('p')
-        $(word).text(`${key} `)
-        $(word).css('font-size', `${count}em`)
+    Object.keys(grouped).forEach((key) => {
+        const count = grouped[key]
+        const word = document.createElement('p')
+        $(word).text(`${key} `).css('font-size', `${count}em`)
         wordCount.append(word)
     })
 }
 
 const countWords = words => {
     const grouped = {}
-    words.forEach(function(word) {
+    words.forEach((word) => {
         let lowerWord = word.toLowerCase()
-        service.postWord(lowerWord)
         grouped[lowerWord] ?
             grouped[lowerWord] += 1 :
             grouped[lowerWord] = 1
     })
     return grouped
+}
+
+const postWords = words => {
+    words.forEach((word) => service.postWord(word))
 }
 
 const appendTopWord = (topWordHeader) => {
@@ -37,4 +38,5 @@ module.exports = {
     appendWords,
     appendTopWord,
     countWords,
+    postWords,
 }
