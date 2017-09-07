@@ -11,6 +11,8 @@ git clone git@github.com:turingschool-examples/word_watch.git
 cd word_watch
 ```
 
+
+
 Then, get those dependencies:
 
 ```shell
